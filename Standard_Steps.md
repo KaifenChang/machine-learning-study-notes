@@ -50,13 +50,13 @@
 - Retrain the model periodically
 - A/B test new models
 
-In our credit card fraud detection project, we indeed follow these standard steps, with each step handled by a dedicated function:
 
-1. **Load and Clean Data** → `load_and_clean_data()`
-2. **Exploratory Data Analysis** → `perform_eda()`
-3. **Data Preparation and Preprocessing** → `prepare_data()` and `handle_imbalanced_data()`
-4. **Model Training** → `train_and_evaluate_model()` (training part)
-5. **Model Evaluation** → `train_and_evaluate_model()` (evaluation part)
+
+1. **Load and Clean Data** 
+2. **Exploratory Data Analysis**
+3. **Data Preparation and Preprocessing** 
+4. **Model Training** 
+5. **Model Evaluation**
 
 This structured approach makes the machine learning process clearer and more organized, and also helps in understanding the purpose and importance of each step. When developing your own machine learning projects, following these steps will help ensure your model development process is comprehensive and effective.
 
