@@ -3,6 +3,9 @@
 ## Table of Contents
 1. [Random Forest](#random-forest)
 2. [XGBoost](#xgboost)
+3. [Logistic Regression](#logistic-regression)
+
+
 
 
 ***
@@ -92,11 +95,11 @@ Step-by-step breakdown of the algorithm:
     - Helps assess model(Random Forest) performance
 
 ### 5️⃣ Scikit Learn Application
-✅ **Classification:** Use `RandomForestClassifier`, **Regression:** Use `RandomForestRegressor`  
-✅ **Enable `oob_score=True`** to calculate OOB error without needing an additional test set  
-✅ **Use `feature_importances_`** to check feature importance  
-✅ **Use `plot_tree()`** to visualize decision trees  
-✅ **Use `GridSearchCV`** to tune hyperparameters such as `n_estimators`, `max_depth`, and `max_features`  
+- **Classification:** Use `RandomForestClassifier`, **Regression:** Use `RandomForestRegressor`  
+- **Enable `oob_score=True`** to calculate OOB error without needing an additional test set  
+- **Use `feature_importances_`** to check feature importance  
+- **Use `plot_tree()`** to visualize decision trees  
+- **Use `GridSearchCV`** to tune hyperparameters such as `n_estimators`, `max_depth`, and `max_features`  
 *** 
 
 ## XGBoost
@@ -190,16 +193,124 @@ Step-by-step breakdown of the algorithm:
     - Subsample ratio
 
 ### 5️⃣ Scikit-Learn Application: XGBoost Best Practices
-✅ Classification: Use `XGBClassifier`, Regression: Use `XGBRegressor`  
-✅ Enable `early_stopping_rounds` to stop training when validation loss stops improving  
-✅ Use `feature_importances_` or `plot_importance()` to check feature importance  
-✅ Use `plot_tree()` to visualize individual decision trees  
-✅ Use `GridSearchCV` to tune hyperparameters such as `n_estimators`, `max_depth`, and `learning_rate`  
-✅ Use `colsample_bytree` and `subsample` to prevent overfitting  
-✅ Use `scale_pos_weight` to handle imbalanced datasets in classification tasks  
-✅ Convert data to `DMatrix` for optimized memory usage when using the native API  
+- Classification: Use `XGBClassifier`, Regression: Use `XGBRegressor`  
+- Enable `early_stopping_rounds` to stop training when validation loss stops improving  
+- Use `feature_importances_` or `plot_importance()` to check feature importance  
+- Use `plot_tree()` to visualize individual decision trees  
+- Use `GridSearchCV` to tune hyperparameters such as `n_estimators`, `max_depth`, and `learning_rate`  
+- Use `colsample_bytree` and `subsample` to prevent overfitting  
+- Use `scale_pos_weight` to handle imbalanced datasets in classification tasks  
+- Convert data to `DMatrix` for optimized memory usage when using the native API  
 
 
+***
+## Logistic Regression
+- **Definition**:  
+  Logistic Regression is a **supervised learning classification algorithm** that predicts the probability of an input belonging to a specific class.  
+- **Type**:  
+  **Supervised Learning → Classification (Binary or Multiclass using OvR/Softmax).**  
+- **Key Idea**:  
+  - Uses a **Sigmoid function** to convert linear predictions into probabilities.  
+  - Applies a **threshold (default 0.5)** to classify outcomes as 0 or 1.  
+
+---
+
+### 1️⃣ Intuitive Understanding
+- **Logistic Regression estimates the probability of an event occurring.**  
+- Example:  
+  - Predicting whether an email is **Spam (1) / Not Spam (0).**  
+  - Predicting whether a customer will **default on a loan (1) / pay back (0).**  
+- **It uses a threshold to classify values into two categories.**
+  - If **\( P > 0.5 \)** → classified as **1 (Positive Class)**  
+  - If **\( P \leq 0.5 \)** → classified as **0 (Negative Class)**  
+
+---
+
+### 2️⃣ How It Works**
+**(1) Linear Combination of Features**
+\[
+z = w_1 x_1 + w_2 x_2 + \dots + w_n x_n + b
+\]
+- \( x_1, x_2, ..., x_n \) → Input features  
+- \( w_1, w_2, ..., w_n \) → Model weights  
+- \( b \) → Bias term  
+
+**(2) Apply the Sigmoid Function**
+\[
+P(y=1 | X) = \frac{1}{1 + e^{-z}}
+\]
+- Maps the linear output **\( z \)** to a probability between **0 and 1**.  
+- Ensures that predictions are always **interpretable as probabilities**.  
+
+**(3) Loss Function: Log Loss (Cross-Entropy Loss)**
+\[
+L = - \sum_{i=1}^{N} [y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i)]
+\]
+- **Why Log Loss and not MSE?**  
+  - **MSE creates a non-convex optimization problem**, making gradient descent inefficient.  
+  - **Log Loss is convex**, ensuring that optimization algorithms converge properly.  
+
+**(4) Optimization: Gradient Descent**
+- **Updates model weights iteratively to minimize Log Loss.**
+\[
+w = w - \alpha \frac{\partial L}{\partial w}
+\]
+- **Common optimizers:**  
+  - `'lbfgs'` (default, works well for most cases).  
+  - `'liblinear'` (good for small datasets, supports L1 regularization).  
+  - `'saga'` (best for large-scale problems).  
+
+---
+
+### 3️⃣ Why Logistic Regression or Why Not?
+**✅ Advantages**
+- **Simple and interpretable**: Weights indicate feature importance.  
+- **Computationally efficient**: Works well on **small-to-medium datasets**.  
+- **Time cost is lower**: Faster training and prediction time compared to complex models like decision trees and neural networks.  
+- **Probability output**: Useful in applications like risk assessment.  
+- **Supports regularization (L1 & L2)** to prevent overfitting.  
+- **Can be extended to multiclass problems (Softmax, OvR).**  
+
+**❌ Disadvantages**
+- **Assumes a linear decision boundary** (struggles with non-linear data).  
+- **Sensitive to outliers** (large coefficients can be distorted).  
+- **Struggles with imbalanced datasets** (requires resampling or weighting).  
+- **Cannot automatically capture feature interactions** (unlike decision trees).  
+
+---
+
+### 4️⃣ Key Concepts
+**Sigmoid Function**
+\[
+\sigma(z) = \frac{1}{1 + e^{-z}}
+\]
+- Converts raw model output into a probability.  
+
+**Decision Boundary**
+- The boundary that separates the two classes is a **linear decision boundary** (unless extended with feature transformations).  
+
+**Evaluation Metrics**
+- **Accuracy** (Not reliable for imbalanced data).  
+- **Precision & Recall** (Better for imbalanced datasets).  
+- **F1-score** (Balance between precision & recall).  
+- **ROC-AUC** (Overall classification ability).  
+
+**Handling Imbalanced Data**
+- **Change Threshold** (Lowering from 0.5 can capture more positive cases).  
+- **Use class weights** (`class_weight='balanced'`).  
+- **Oversampling/Undersampling** (SMOTE to generate synthetic data).  
+
+---
+
+### 5️⃣ Scikit-Learn Application
+- Use `LogisticRegression` for classification.
+- Normalize features with `StandardScaler()`.
+- Handle imbalanced data with `class_weight='balanced'`.
+- Check feature importance using `coef_`.
+- Tune hyperparameters using `GridSearchCV`.
+- Use `L1` or `L2` Regularization to prevent overfitting.
+- Evaluate with Precision, Recall, F1-score instead of Accuracy.
+- Use `roc_auc_score` for classification performance.
 
 
 ***
